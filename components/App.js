@@ -35,7 +35,7 @@ handleSearch: function(searchingText) {
     this.setState({
         loading: true
     });
-    this.getGif(searchingText, function(gif) {
+    this.getGif(searchingText).then (function(gif) {
         this.setState({
             loading: false,
             gif: gif,
@@ -44,10 +44,10 @@ handleSearch: function(searchingText) {
     }.bind(this));
 },
 
-function getGif(searchingText) {
+getGif: function(searchingText) {
     return new Promise(
-        var url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
         function (resolve, reject) {
+            var url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
             const request = new XMLHttpRequest();
             request.onload = function () {
                 var data = JSON.parse(request.responseText).data; 
@@ -67,13 +67,9 @@ function getGif(searchingText) {
             };
             request.open("GET", url);
             request.send();
-        });
-
-getGif(searchingText)
-.then(response => console.log(response))
-.catch(error => console.error("Sth went wrong", error))
-
-
+        }
+    )
+}
 
 
 /*
